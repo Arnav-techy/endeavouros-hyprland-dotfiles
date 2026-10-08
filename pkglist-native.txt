@@ -73,6 +73,7 @@ fwupd
 git
 git-lfs
 glances
+gnome-keyring
 go
 gparted
 gpm
@@ -226,6 +227,7 @@ rtkit
 rustup
 s-nail
 sddm
+seahorse
 sg3_utils
 shellcheck
 smartmontools
