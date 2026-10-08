@@ -1,0 +1,6 @@
+# Ignore system cache & temporary files
+**/*.bak
+**/*.backup
+**/.cache
+**/backup/
+.DS_Store

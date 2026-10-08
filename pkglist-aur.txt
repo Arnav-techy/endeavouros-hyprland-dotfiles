@@ -1,0 +1,9 @@
+brave-bin
+google-chrome
+grimblast-git
+kvantum-theme-catppuccin-git
+ocs-url
+tofi
+visual-studio-code-bin
+waypaper
+wlogout
