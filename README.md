@@ -2,7 +2,7 @@
 
 # ⚔️ Berserk Edition — EndeavourOS / Arch Hyprland Dotfiles
 
-A sleek, dark, and high-performance **Hyprland** setup crafted with a **Berserk (Guts & Eclipse)** theme aesthetic for EndeavourOS / Arch Linux.
+A sleek, dark, and high-performance **Hyprland** setup crafted with a **Berserk (Guts & Eclipse)** theme aesthetic for EndeavourOS / Arch Linux, featuring **macOS-style smooth window sliding animations** and a customized **Waybar**.
 
 [![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://archlinux.org/)
 [![EndeavourOS](https://img.shields.io/badge/EndeavourOS-7F3FBF?style=for-the-badge&logo=endeavouros&logoColor=white)](https://endeavouros.com/)
@@ -18,7 +18,10 @@ A sleek, dark, and high-performance **Hyprland** setup crafted with a **Berserk 
 
 ---
 
-## 🎨 Screenshots & Components
+## 🎨 Visual Showcase & Screenshots
+
+### 📊 Customized Waybar Top Bar
+![Custom Waybar Top Bar](screenshots/waybar.png)
 
 | **Active Workspace** | **Tofi App Launcher** |
 |:---:|:---:|
@@ -30,12 +33,68 @@ A sleek, dark, and high-performance **Hyprland** setup crafted with a **Berserk 
 
 ---
 
+## 🧈 macOS-Style Smooth Window & Workspace Animations
+
+This configuration replaces snappy, robotic window tiling with **custom cubic-bezier curves** that give windows and workspaces an organic, fluid, **macOS-like slide-and-glide momentum**:
+
+```ini
+animations {
+    enabled = true
+
+    # Custom Bezier Curves
+    bezier = wind, 0.05, 0.9, 0.1, 1.05
+    bezier = winIn, 0.1, 1.1, 0.1, 1.1
+    bezier = winOut, 0.3, -0.3, 0, 1
+    bezier = liner, 1, 1, 1, 1
+
+    # Fluid Slide Transitions
+    animation = windows,     1, 6, wind, slide
+    animation = windowsIn,   1, 6, winIn, slide
+    animation = windowsOut,  1, 5, winOut, slide
+    animation = windowsMove, 1, 5, wind, slide
+    animation = fade,        1, 10, default
+    animation = workspaces,  1, 5, wind
+}
+```
+
+- **Window Opening (`windowsIn`)**: Smoothly slides into view with a subtle deceleration curve.
+- **Window Closing (`windowsOut`)**: Seamless slide-out with slight momentum.
+- **Window Movement (`windowsMove`)**: Slides dynamically when swapped or rearranged in the layout.
+- **Workspace Navigation**: Fluid continuous sliding across virtual desktops.
+
+---
+
+## 📊 Waybar Configuration & Modules
+
+The top bar (`.config/waybar/config.jsonc`) is customized with a dark, glassmorphic Berserk styling (`style.css`) and interactive scripts:
+
+```
++-------------------------------------------------------------------------------------------------------+
+| [1] [2] [3]  [Eclipse / Window Title]       12:00 PM       (🔊 80%) (☀️ 70%) (📶 WiFi) (🔋 95%) (🔔) (⏻) |
++-------------------------------------------------------------------------------------------------------+
+```
+
+- **Left Modules**:
+  - **Workspaces (`hyprland/workspaces`)**: Dynamic clickable workspace indicators with live active state tracking.
+  - **Active Window (`hyprland/window`)**: Truncated window title with a default fallback title of `Eclipse`.
+- **Center Module**:
+  - **Clock (`clock`)**: Minimalist digital time and calendar display.
+- **Right Modules**:
+  - **Audio (`pulseaudio`)**: Volume status with click-to-mute and scroll-to-adjust.
+  - **Brightness (`backlight`)**: Screen backlight levels with custom dialog controls.
+  - **Bluetooth & Network (`bluetooth`, `network`)**: Integrated with custom Python WiFi switcher (`scripts/wifi_menu.py`).
+  - **Battery (`battery`)**: Real-time battery percentage and charging state.
+  - **Notifications (`custom/notification`)**: SwayNC bell icon that opens the notification tray on click.
+  - **System Tray (`tray`)**: Background apps and status indicators.
+
+---
+
 ## ⚡ Overview & Stack
 
 | Component | Software / Utility | Description |
 |---|---|---|
-| **Compositor** | [Hyprland](https://hyprland.org/) | Dynamic tiling Wayland compositor with smooth animations |
-| **Status Bar** | [Waybar](https://github.com/Alexays/Waybar) | Highly customizable top bar with custom widgets & scripts |
+| **Compositor** | [Hyprland](https://hyprland.org/) | Dynamic tiling Wayland compositor with macOS-style slide animations |
+| **Status Bar** | [Waybar](https://github.com/Alexays/Waybar) | Glassmorphic status bar with custom scripts (WiFi menu, brightness) |
 | **Terminal** | [Kitty](https://sw.kovidgoyal.net/kitty/) | GPU-accelerated terminal with custom Berserk dark palette |
 | **Launcher** | [Tofi](https://github.com/philj56/tofi) | Ultra-fast Wayland dynamic app launcher and clipboard picker |
 | **Notification Center** | [SwayNC](https://github.com/ErikReider/SwayNotificationCenter) | Wayland notification daemon with full control center |
@@ -79,7 +138,7 @@ A sleek, dark, and high-performance **Hyprland** setup crafted with a **Berserk 
 ### 🖥️ Workspaces
 | Keybinding | Action |
 |---|---|
-| `SUPER + [1 - 9, 0]` | Switch to Workspace `1 - 10` |
+| `SUPER + [1 - 9, 0]` | Switch to Workspace `1 - 10` (with smooth slide) |
 | `SUPER + SHIFT + [1 - 9, 0]` | Move active window to Workspace `1 - 10` |
 | `SUPER + SHIFT + S` | Move window to special (magic scratchpad) workspace |
 | `SUPER + Mouse Scroll` | Cycle through workspaces |
@@ -150,6 +209,7 @@ endeavouros-dotfiles/
 │   ├── swaync/              # SwayNotificationCenter theme & style
 │   ├── tofi/                # Tofi launcher & clipboard selector configs
 │   ├── waybar/              # Waybar bar modules, custom scripts & CSS
+│   │   └── scripts/         # Brightness dialog, toggle app & WiFi menu scripts
 │   ├── waypaper/            # Wallpaper switcher config
 │   └── wlogout/             # Power menu layout and styling
 ├── screenshots/             # Previews and showcase screenshots
@@ -160,14 +220,6 @@ endeavouros-dotfiles/
 ├── pkglist-aur.txt          # AUR packages list (yay)
 └── README.md                # Documentation & cheatsheet
 ```
-
----
-
-## 🛠️ Key Customizations
-
-- **Custom Waybar Scripts**: Check `.config/waybar/scripts/` for interactive WiFi menu dialogs and custom brightness widgets.
-- **Secure Keyring**: Includes FreeDesktop Secret Service daemon autostart for seamless GitHub & IDE authentication on Wayland.
-- **Dynamic Clipboard**: Supercharged clipboard history stored safely via `cliphist` and searchable through `tofi`.
 
 ---
 
